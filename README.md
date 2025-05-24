@@ -207,7 +207,7 @@ The API returns a JSON response with the following structure:
         }
       ```
 
-If you wanna see the whole response, please click [here](./data/eth_6h_txnNumber.json)
+If you want to see the whole response, please click [here](./data/eth_6h_txnNumber.json)
 
 ## Response Field Explanations
 
@@ -246,11 +246,26 @@ If you wanna see the whole response, please click [here](./data/eth_6h_txnNumber
 
 ### JavaScript/Node.js
 ```javascript
+// Using a proxy service or Cloudflare bypass service
 async function getTrendingTokens(chain = 'eth', timePeriod = '6h', orderBy = 'swaps') {
     const url = `https://gmgn.ai/defi/quotation/v1/rank/${chain}/swaps/${timePeriod}?&orderby=${orderBy}&direction=desc&filters[]=not_honeypot&filters[]=verified&filters[]=renounced`;
     
+    // Configure headers to bypass Cloudflare protection
+    const headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+        'Accept': 'application/json, text/plain, */*',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Connection': 'keep-alive',
+        'Upgrade-Insecure-Requests': '1'
+    };
+    
     try {
-        const response = await fetch(url);
+        // Consider using services like ScrapingBee, Bright Data, or similar for Cloudflare bypass
+        const response = await fetch(url, { 
+            headers,
+            // Add proxy configuration if using a bypass service
+        });
         const data = await response.json();
         
         if (data.code === 0) {
@@ -273,6 +288,8 @@ getTrendingTokens('eth', '6h', 'volume').then(tokens => {
 ### Python
 ```python
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 def get_trending_tokens(chain='eth', time_period='6h', order_by='swaps'):
     url = f"https://gmgn.ai/defi/quotation/v1/rank/{chain}/swaps/{time_period}"
@@ -282,8 +299,34 @@ def get_trending_tokens(chain='eth', time_period='6h', order_by='swaps'):
         'filters[]': ['not_honeypot', 'verified', 'renounced']
     }
     
+    # Headers to mimic browser behavior
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+        'Accept': 'application/json, text/plain, */*',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Connection': 'keep-alive'
+    }
+    
+    # Configure session with retry strategy
+    session = requests.Session()
+    retry_strategy = Retry(
+        total=3,
+        backoff_factor=1,
+        status_forcelist=[429, 500, 502, 503, 504],
+    )
+    adapter = HTTPAdapter(max_retries=retry_strategy)
+    session.mount("http://", adapter)
+    session.mount("https://", adapter)
+    
     try:
-        response = requests.get(url, params=params)
+        # For production use, consider integrating with services like:
+        # - cloudscraper library
+        # - requests-html with JavaScript rendering
+        # - Third-party APIs like ScrapingBee, Bright Data, etc.
+        
+        response = session.get(url, params=params, headers=headers, timeout=30)
+        response.raise_for_status()
         data = response.json()
         
         if data['code'] == 0:
@@ -302,12 +345,18 @@ if tokens:
 
 ### cURL
 ```bash
-curl -X GET "https://gmgn.ai/defi/quotation/v1/rank/eth/swaps/6h?&orderby=swaps&direction=desc&filters[]=not_honeypot&filters[]=verified&filters[]=renounced"
+curl -X GET \
+  -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" \
+  -H "Accept: application/json, text/plain, */*" \
+  -H "Accept-Language: en-US,en;q=0.9" \
+  --retry 3 \
+  --retry-delay 2 \
+  "https://gmgn.ai/defi/quotation/v1/rank/eth/swaps/6h?&orderby=swaps&direction=desc&filters[]=not_honeypot&filters[]=verified&filters[]=renounced"
 ```
 
 ## Rate Limits
 
-- This API is protected by Clouflare, so its required to use third-party captcha solving services.
+- This API is protected by Cloudflare, so its required to use third-party captcha solving services.
 - No official rate limits are documented
 - Recommended: Implement reasonable delays between requests
 - Monitor response times and implement exponential backoff if needed
