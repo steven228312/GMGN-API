@@ -1,6 +1,10 @@
 # GMGN-API
 This is the API for the GMGN.AI platform that allows users to view the trending tokens by various criteria.
 
+<p align="center">
+  <img src="https://github.com/stevendev0822/GMGN-API/tree/main/public/gmgn.PNG" alt="GMGN_Trending_Image">
+</p>
+
 `https://gmgn.ai/defi/quotation/v1/rank/{chain}/swaps/{time_period}?&orderby={criteria}&direction={direction}&filters[]=not_honeypot&filters[]=verified&filters[]=renounced`
 
 ## Table of Contents
