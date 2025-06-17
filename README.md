@@ -2,7 +2,7 @@
 This is the API for the GMGN.AI platform that allows users to view the trending tokens by various criteria.
 
 <p align="center">
-  <img src="https://github.com/stevendev0822/GMGN-API/blob/main/public/gmgn.PNG" alt="GMGN_Trending_Image">
+  <img src="https://github.com/steven228312/GMGN-API/blob/main/public/gmgn.PNG" alt="GMGN_Trending_Image">
 </p>
 
 `https://gmgn.ai/defi/quotation/v1/rank/{chain}/swaps/{time_period}?&orderby={criteria}&direction={direction}&filters[]=not_honeypot&filters[]=verified&filters[]=renounced`
@@ -393,9 +393,9 @@ This project is licensed under the [MIT License](./LICENSE).
 ## Contact Information
 
 - Gmail: [steven0822.dev@gmail.com](mailto:steven0822.dev@gmail.com)
-- GitHub: [Steven Leal(stevendev0822)](https://github.com/stevendev0822)
-- Telegram: [@stevendev0822](https://t.me/stevendev0822)
-- Twitter: [@stevendev0822](https://twitter.com/stevendev0822)
-- Instagram: [@stevendev0822](https://www.instagram.com/stevendev0822/)
+- GitHub: [Steven Leal(steven228312)](https://github.com/steven228312)
+- Telegram: [@steven228312](https://t.me/steven228312)
+- Twitter: [@steven228312](https://twitter.com/steven228312)
+- Instagram: [@steven228312](https://www.instagram.com/steven228312/)
 
 
